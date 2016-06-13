@@ -51,9 +51,14 @@ public String loginService(@FormParam("useremail") String useremail,
 	User user =new User(useremail, pass);
 	UserBDManager BD =new UserBDManager(user);
 	User Result=BD.getUser();
+	if (Result!=null){
 	object.put("Status", "OK");
 	object.put("username", Result.getUserName());
-	object.put("userId", Result.getUserId());
+	object.put("userId", Result.getUserId());}
+	else {
+		object.put("Status", "Failed");
+
+	}
 	return object.toString();
 }
 

@@ -1,7 +1,16 @@
 package intelligent_To_Do.Controller;
 
+import intelligent_To_Do.Model.MeetingNoteEntity;
+import intelligent_To_Do.Model.NoteEntity;
+import intelligent_To_Do.Model.OrdinaryNoteEntity;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -12,9 +21,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 
 
 
@@ -132,4 +143,43 @@ public String SignIn(@FormParam("useremail") String email,@FormParam("userpasswo
 return "Failed";
 }
 	
+@POST
+@Path("/SYnc")
+public String SYnc(@FormParam("NoteList") String nnotes){
+	//NoteEntity noteobj ;
+	/*ArrayList<NoteEntity> nnotes=new ArrayList<NoteEntity>();
+	noteobj =new OrdinaryNoteEntity("33", "5678", Timestamp.valueOf("2016-04-27 13:50:25.0"),
+			false, false, "Ordinary", "note from controller");
+	nnotes.add(noteobj);
+	noteobj= new MeetingNoteEntity(java.sql.Date.valueOf("2016-04-27"), Time.valueOf("13:49:00"), 
+			"contr meeting", "mmmm", 
+			"agnda", "12","123", Timestamp.valueOf("2016-04-30 13:50:25.0"), false, false, "Meeting");
+	nnotes.add(noteobj);
+	System.out.println("notessobjs=="+nnotes);*/
+	
+	String serviceUrl = "http://localhost:8880/rest/synchroinzationService";
+	String urlParameters = "NoteList=" + nnotes;
+	
+	String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
+			"application/x-www-form-urlencoded;charset=UTF-8");
+	/*
+	JSONParser parser =new JSONParser();
+	try {
+		JSONArray array = (JSONArray) parser.parse(retJson);
+		for (int i=0 ;i<array.size();i++)
+		{ JSONObject object ;
+		object =(JSONObject) array.get(i);
+		String status=object.get("syncType").toString();
+		String noteId=object.get("noteid").toString();
+		
+		System.out.println("<p> syncType= "+status+"</p><br>"
+		  + "<p> noteId="+noteId+"</p>");
+		}
+		
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}*/
+	//return Response.ok(new Viewable("/html/index")).build();
+return "Failed";
+}
 }
